@@ -18,6 +18,7 @@ let controls;
 
 //Set which object to render
 let objToRender = 'tor';
+let objToRender1 = 'dino';
 
 //Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
@@ -45,6 +46,22 @@ loader.load(
   },
  );
 
+ //Load the file
+loader.load(
+  `models/${objToRender1}/scene.gltf`,
+  function (gltf) {
+    //If the file is loaded, add it to the scene
+    object = gltf.scene;
+    scene.add(object);
+    object.scale.x = 1
+    object.position.x= 0
+    object.position.y= 5
+    object.position.z= 0
+    object.castShadow = true
+    object.receiveShadow = true
+  },
+ );
+
  //Instantiate a new renderer and set its size
 const renderer = new THREE.WebGLRenderer({ alpha: true }); //Alpha: true allows for the transparent background
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -54,6 +71,7 @@ document.getElementById("container3D").appendChild(renderer.domElement);
 
 //Set how far the camera will be from the 3D model
 camera.position.z = objToRender === "tor" ? 25 : 500;
+camera.position.z = objToRender === "dino" ? 25 : 500;
 
 //Add lights to the scene, so we can actually see the 3D model
 const topLight = new THREE.DirectionalLight(0xffffff, 1); // (color, intensity)
@@ -63,6 +81,8 @@ scene.add(topLight);
 
 const ambientLight = new THREE.AmbientLight(0x333333, objToRender === "tor" ? 5 : 1);
 scene.add(ambientLight);
+const ambientLight1 = new THREE.AmbientLight(0x333333, objToRender === "dino" ? 5 : 1);
+scene.add(ambientLight1);
 
 //This adds controls to the camera, so we can rotate / zoom it with the mouse
 if (objToRender === "tor") {
